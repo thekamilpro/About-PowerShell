@@ -23,3 +23,63 @@ for ($MyVariable = 0; $MyVariable -lt 99; $MyVariable++) {
 for ($MyVariable = 10; $MyVariable -gt 5; $MyVariable = $MyVariable - 1) {
     '$MyVariable is {0}' -f $MyVariable
 }
+
+# or specify variable outside if
+$outside = 7
+for (; $outside -lt 15; $outside++) {
+    '$Outside is {0}' -f $outside
+}
+
+#Looping through array
+$pets = @("Cat", "Dog", "Fish", "Turtle")
+$pets.Count
+
+$pets[2]
+
+"My pets in order:"
+for ($i = 0; $i -lt $pets.Count; $i++) {
+    $pets[$i]
+}
+
+# How about I'd like to add numbers
+""
+"My pets in order:"
+""
+for ($i = 0; $i -lt $pets.Count; $i++) {
+    $Number = $i + 1
+    "  {0}. {1}" -f $Number, $pets[$i]
+}
+
+# For also works with strings
+for ($text = ''; $text.Length -lt 10; $text += '@') {
+    $text
+}
+
+# Nested for
+$row = 1..10
+$column = 1..10
+
+for ($i = 0; $i -lt $row.Count; $i++) {
+    for ( $j = 0; $j -lt $column.Count; $j++) {
+
+        $r = $row[$i]
+        $c = $column[$j]
+        $result = $r * $c
+
+        $t = "{0} * {1} = {2}" -f $r, $c, $result
+        Write-Host $t
+    }
+}
+     
+# It never ends... We need to break with CTRL - C
+for ( $i = 0 ;; $i++ ) {
+    "Loop number: $I"
+}
+
+for ( $i = 0 ;; $i++ ) {
+    "Loop number: $I"
+    if ($i -eq 1000) {
+        "Breaking out"
+        break
+    }
+}
