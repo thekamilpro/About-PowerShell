@@ -72,14 +72,47 @@ for ($i = 0; $i -lt $row.Count; $i++) {
 }
      
 # It never ends... We need to break with CTRL - C
-for ( $i = 0 ;; $i++ ) {
+for ( $i = 0 ; ; $i++ ) {
     "Loop number: $I"
 }
 
-for ( $i = 0 ;; $i++ ) {
+# Or we can break when certain condition is met 
+for ( $i = 0 ; ; $i++ ) {
     "Loop number: $I"
     if ($i -eq 1000) {
         "Breaking out"
         break
     }
 }
+
+# A real case scenario with Azure Application Insigts
+
+$Headers = @("First Name", "Email", "Phone Number")
+
+$Rows = @(
+    @("Kamil", "kamil@kamil.mail", "111-111-111"),
+    @("John", "john@john.mail", "222-222-222"),
+    @("Abigail", "abigail@abigail.mail", "333-333-333")
+)
+
+# List is like an array, however it allows to add new entries to it
+$result = New-Object System.Collections.Generic.List[System.Object]
+
+# We work with one record at the time
+foreach ($row in $Rows) {
+
+    # We need a blank PowerShell object. Notice we don't specify any properties up front
+    $record = [PSCustomObject]@{}
+
+    # Now we are going to iterate through each property in the row
+    for ($i = 0; $i -lt $Headers.Count; $i++) {
+
+        # Since we are working with PowerShell object, we can add members
+        # Notice we use index for both name and value
+        $record | Add-Member -MemberType NoteProperty -Name $Headers[$i] -Value $row[$i]
+    }
+    # We add completed object object to the list
+    $result.Add($record)
+}
+#Display list with all records
+$result
