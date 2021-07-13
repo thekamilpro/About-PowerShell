@@ -13,6 +13,7 @@
 
 for ($MyVariable = 0; $MyVariable -lt 10; $MyVariable = $MyVariable + 1) {
     '$MyVariable is {0}' -f $MyVariable
+    Start-Sleep -Seconds 2
 }
 
 for ($MyVariable = 0; $MyVariable -lt 99; $MyVariable++) {
