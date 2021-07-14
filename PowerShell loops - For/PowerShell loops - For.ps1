@@ -1,4 +1,4 @@
-# Link to the video:
+# Link to the video: https://youtu.be/YQnBVn-9SN0
 
 # Documentation:
 # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_for?view=powershell-7.1
