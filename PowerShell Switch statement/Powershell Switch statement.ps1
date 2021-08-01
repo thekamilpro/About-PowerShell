@@ -19,7 +19,7 @@ switch (2) {
     3 { "Red"}
 }
 
-# We can work with variable
+# Work with variable
 $number = 1
 switch ($number) {
     0 { "Blue" }
@@ -28,7 +28,7 @@ switch ($number) {
     3 { "Red"}
 }
 
-# We can also assign variables within scriptblock 
+# Assign variables within scriptblock 
 $number = 3
 switch ($number) {
     0 { $result = "Blue" }
@@ -48,7 +48,7 @@ $result = switch ($number) {
 }
 Write-Host "The result is: $result" -ForegroundColor $result
 
-# We can use Default in case there's no match
+#  Use default in case there's no match
 $number = 8
 $result = switch ($number) {
     0 { "Blue" }
@@ -62,17 +62,67 @@ $result = switch ($number) {
 Write-Host "The result is: $result" -ForegroundColor $result
 
 # Strings can also be matched
-switch ((Get-Host).Name) {
+# This also shows working on expression
+switch ( (Get-Host).Name ) {
     "Visual Studio Code Host" { "You are using VS CODE" }
     "ConsoleHost" { "You are using Console!" }
     default {"Unknown host $_"}
 }
 
-# We ca even use arrays!
+# Arrays!
 $employees = @("Developer", "Project Manager", "DevOps Engineer", "Developer", "Sysadmin")
 switch ($employees) {
     "Developer" {"We need a Developer!"}
     "Project Manager" {"We need Project Manager"}
     "DevOps Engineer" {"We need DevOps Engineer"}
     "Sysadmin" {"We need Sysadmin"}
+}
+
+# Using script block, when comparing value
+$age = 25
+switch ($age) {
+    {$_ -ge 18} {
+        "It's an adult"
+    }
+
+    {$_ -lt 18} {
+        "It not an adult"
+    }
+}
+
+# PowerShell will match multiple times
+switch ("something") {
+    "something" {"This is lower case"}
+    "SOMETHING" {"This is upper case"}
+    "SomeTHinG" {"This is mixed"}
+}
+
+# Stop execution with break
+switch ("something") {
+    "something" {"This is lower case"}
+    "SOMETHING" {"This is upper case"; break;}
+    "SomeTHinG" {"This is mixed"}
+}
+
+# Make test case sensitive
+switch -CaseSensitive ("something") {
+    "something" {"This is lower case"}
+    "SOMETHING" {"This is upper case"; break;}
+    "SomeTHinG" {"This is mixed"}
+}
+
+# Enable wildcard
+switch -Wildcard ("Kamil") {
+    "*Anna*" {"There's notification for Anna"}
+    "*John*" {"There's notification for John"}
+    "*Kamil*" {"There's notification for Kamil"}
+    default {"Unknown"}
+}
+
+# Enable Regex
+switch -Regex ("Kamil") {
+    "^Anna" {"There's notification for Anna"}
+    "^John" {"There's notification for John"}
+    "^Kamil" {"There's notification for Kamil"}
+    default {"Unknown"}
 }
