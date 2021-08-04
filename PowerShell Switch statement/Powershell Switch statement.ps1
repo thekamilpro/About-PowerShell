@@ -1,6 +1,6 @@
-# Link to the video: 
+# Link to the video: https://youtu.be/EqJ0lBO1rM4
 
-# Documentation:
+# Documentation: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_switch?view=powershell-7.1
 
 # Basic version
 
@@ -86,7 +86,7 @@ switch ($age) {
     }
 
     {$_ -lt 18} {
-        "It not an adult"
+        "It's not an adult"
     }
 }
 
@@ -100,7 +100,8 @@ switch ("something") {
 # Stop execution with break
 switch ("something") {
     "something" {"This is lower case"}
-    "SOMETHING" {"This is upper case"; break;}
+    "SOMETHING" {"This is upper case" 
+                    break}
     "SomeTHinG" {"This is mixed"}
 }
 
