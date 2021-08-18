@@ -25,11 +25,11 @@ $stuff
 $stuff = "Table", "Cup", "Coffe", "Milk"
 $stuff
 
-# Mixing different types in array
-$mix = @("Hi", 74, (Get-Date), "Bye")
-$mix
+###############################
+# Accessing items in an array #
+###############################
 
-# Accessing items in an array; Arrays are 0 based indexed
+#Arrays are 0 based indexed
 $stuff[0]
 $stuff[2]
 $stuff[-1]
@@ -39,13 +39,31 @@ $stuff[2..0]
 
 # Accessing items outside of an array is silent
 $stuff[20]
-
 [bool]$stuff[20]
 
-# However null will throw an error 
+# Mixing different types in array
+$mix = @("Hi", 74, (Get-Date), "Bye")
+$mix
+
+# More often, we can store projects
+$people = @(
+    [pscustomobject]@{Name = "John"; Email = "john@john.com"}
+    [pscustomobject]@{Name = "Tony"; Email = "tony@tony.com"}
+    [pscustomobject]@{Name = "Fiber"; Email = "fiber@optics.com"}
+)
+$people
+$people[-1]
+$people.Email
+$people | Where-Object {$_.Name -eq "John"}
+$people.Where({$_.Name -eq "John"}).Email
+
+# Null will throw an error 
 $IDidntCreateThis[3]
 
-# Looping
+###########
+# Looping #
+###########
+
 $domains = @('bbc.com', 'github.com', 'youtube.com', 'blah.blah')
 $ProgressPreference = 'SilentlyContinue'
 foreach ($domain in $domains) {
@@ -68,8 +86,66 @@ for ($i = 0; $i -lt $domains.Count; $i++) {
     "$($domains[$i]) is pinging: $Result"
 }
 
+###################
+# Updating values #
+###################
 
+$Week = @("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+$Week[2] #Now it is Wednesday
+$Week[2] = "Boo"
+$Week[2]
+$Week
 
+# Update out of index throws error
+$Week[8] = "Hi"
 
-# Updating items in array
-# Arraylist/List
+#############
+# Operators #
+#############
+
+# Join
+$Week
+$Week -join "|"
+$Week -join $null
+
+# In
+"Tuesday" -in $Week
+
+# Match
+$Week -match "es"
+
+###################
+# Adding to array #
+###################
+
+# Arrays have by definition fixed size in memory, in other words 
+# you shouldn't be able to add more items to it. 
+# PowerShell however allows you to do that, hiding all complexity
+# by creating a new array, copying all existing item, adding new one
+# and finally removing old array. 
+# If you plan to add items to your array, look at ArrayList and List below
+
+# Adding elements to array
+$Week
+$Week.Add("January") #this throws an error
+$Week += "January"
+$Week
+
+# Adding arrays together
+$ArrayA = 1..10
+$ArrayB = 11..20
+$ArrayA + $ArrayB
+
+#############
+# ArrayList #
+#############
+
+#Adding items to ArrayList
+$alist = [System.Collections.ArrayList]::new() #This is .Net framework
+$alist.Add("January")
+[void]$alist.Add("February") #Void stops prevents writing to console
+$alist
+
+# Removing from ArrayList
+$alist.Remove($alist[1])
+$alist
