@@ -1,6 +1,4 @@
-# Link to the video:
-
-# Documentation
+# Link to the video: https://youtu.be/rvGd8kxXlVc
 
 # What is an array and why do I need it?
 <#
