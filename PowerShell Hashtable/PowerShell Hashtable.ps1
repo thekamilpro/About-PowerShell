@@ -123,6 +123,61 @@ if ($details.ContainsKey('Null')) {"It's null!"}
 $employee = @{
     Name = "Beth"
     HourlyWage = 10
-    "Hours worked" = 7.5
+    HoursWorked = 7.5
     }
-$employee | Select-Object -Property  *,@{N = "Wage"; E = {$_.HourlyWage * $_."Hours Worked" } }
+$employee | Select-Object -Property  *,@{N = "Wage"; E = {$_.HourlyWage * $_.HoursWorked } }
+
+#############
+# Splatting #
+#############
+
+Invoke-RestMethod -Uri catfact.ninja/facts -Method Get | Select-Object Data -ExpandProperty Data
+
+$params = @{
+    Uri = "catfact.ninja/facts"
+    Method = "Get"
+}
+Invoke-RestMethod @params | Select-Object Data -ExpandProperty Data
+
+# Adding parameters
+
+$Verbose = $true
+if ($Verbose) {
+    $params['Verbose'] = $true
+}
+Invoke-RestMethod @params
+
+#####################
+# Nested hashtables #
+#####################
+
+$Environments = @{
+
+    Development = @{
+        Server = "Server1"
+        Admin = "Rachel Green"
+        Credentials = @{
+            Username = "Serv1"
+            Password = "Secret"
+        }
+    }
+
+    Test = @{
+        Server = "Server2"
+        Admin = "Joe Triviani"
+        Credentials = @{
+            Username = "Serv2"
+            Password = "Letmein"
+        }
+    }
+
+    # Production = @{
+    #     Server = "Server3"
+    #     Admin = "Ross Geller"
+    #     Credentials = @{
+    #         Username = "Serv3"
+    #         Password = "Nosuchplace"
+    #     }
+    # }
+
+}
