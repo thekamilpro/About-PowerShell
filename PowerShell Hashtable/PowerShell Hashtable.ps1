@@ -171,13 +171,65 @@ $Environments = @{
         }
     }
 
-    # Production = @{
-    #     Server = "Server3"
-    #     Admin = "Ross Geller"
-    #     Credentials = @{
-    #         Username = "Serv3"
-    #         Password = "Nosuchplace"
-    #     }
-    # }
-
 }
+
+# Accessing nested properties
+$Environments
+$Environments.Keys
+$Environments.Values
+
+$Environments.Test
+$Environments.Test.Credentials
+$Environments['Test']['Credentials']
+
+# Updating nested properties
+$Environments.Test.Credentials.Username = "admin"
+$Environments.Test.Credentials
+
+# Quickly unwrapping all properties
+$Environments | ConvertTo-Json -Depth 99
+
+# Adding nested properties
+$Environments['Production'] = @{}
+$Environments.Production.Server = "Server3"
+$Environments.Production.Admin = "Ross Geller"
+$Environments.Production['Credentials'] = @{}
+$Environments.Production.Credentials.Username = "Serv3"
+$Environments.Production.Credentials.Password = "Nosuchplace"
+
+#####################
+# Working with JSON #
+#####################
+
+$Environments | ConvertTo-Json | Out-File C:\temp\envs.json
+Get-Content C:\Temp\envs.json | ConvertFrom-Json #This will create pscustomobject
+
+##################
+# PSCustomObject #
+##################
+
+# Creating a new object
+$EnvironmentsObject = [pscustomobject]@{
+
+    Development = @{
+        Server = "Server1"
+        Admin = "Rachel Green"
+        Credentials = @{
+            Username = "Serv1"
+            Password = "Secret"
+        }
+    }
+
+    Test = @{
+        Server = "Server2"
+        Admin = "Joe Triviani"
+        Credentials = @{
+            Username = "Serv2"
+            Password = "Letmein"
+        }
+    }
+}
+
+# Casting hashtable to object
+[PSCustomObject]$Environments
+
