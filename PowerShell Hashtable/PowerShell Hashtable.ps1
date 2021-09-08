@@ -1,3 +1,25 @@
+
+<#PSScriptInfo
+.VERSION 1.0.0
+.GUID 50fa84c4-080d-45cd-82a8-9e8dba10b187
+.AUTHOR Kamil Procyszyn
+.COPYRIGHT Kamil Procyszyn
+.PROJECTURI https://github.com/kprocyszyn/About-PowerShell
+.RELEASENOTES 2021 September
+.DESCRIPTION
+Link to the video:
+Documentation: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_hash_tables?view=powershell-7.1#:~:text=In%20PowerShell%2C%20each%20hash%20table%20is%20a%20Hashtable,to%20create%20an%20ordered%20dictionary%20%28System.Collections.Specialized.OrderedDictionary%29%20in%20PowerShell.
+#>
+
+<#
+About hashtable:
+
+A hash table, also known as a dictionary or associative array, 
+is a compact data structure that stores one or more key/value pairs. 
+For example, a hash table might contain a series of IP addresses and computer names, 
+where the IP addresses are the keys and the computer names are the values, or vice versa.
+#>
+
 #Creating a hashtable
 $hash = @{}
 
