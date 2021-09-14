@@ -7,7 +7,7 @@
 .PROJECTURI https://github.com/kprocyszyn/About-PowerShell
 .RELEASENOTES 2021 September
 .DESCRIPTION
-Link to the video:
+Link to the video: https://youtu.be/oti2l8EmAT8
 Documentation: https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_hash_tables?view=powershell-7.1#:~:text=In%20PowerShell%2C%20each%20hash%20table%20is%20a%20Hashtable,to%20create%20an%20ordered%20dictionary%20%28System.Collections.Specialized.OrderedDictionary%29%20in%20PowerShell.
 #>
 
