@@ -5,7 +5,7 @@
 .AUTHOR Kamil Procyszyn
 .COPYRIGHT Kamil Procyszyn
 .PROJECTURI https://github.com/kprocyszyn/About-PowerShell
-.RELEASENOTES 2021 October
+.RELEASENOTES 2021 November
 .DESCRIPTION
 Link to the video:
 Documentation:
@@ -14,8 +14,10 @@ Documentation:
 <#
 About PsCustomObject:
     https://forums.powershell.org/t/what-is-the-difference-between-pscustomobject-and-psobject/3887/4
-    [PSCustomObject] is a type accelerator. It constructs a PSObject, but does so in a way that results in hash table keys becoming properties. 
-    PSCustomObject isn’t an object type per se - it’s a process shortcut. The docs are relatively clear about it (https://msdn.microsoft.com/en-us/library/system.management.automation.pscustomobject(v=vs.85).aspx) 
+    [PSCustomObject] is a type accelerator. It constructs a PSObject, but does so in a way that results in hash table keys 
+    becoming properties. 
+    PSCustomObject isn’t an object type per se - it’s a process shortcut. 
+    The docs are relatively clear about it (https://msdn.microsoft.com/en-us/library/system.management.automation.pscustomobject(v=vs.85).aspx) 
     PSCustomObject is a placeholder that’s used when PSObject is called with no constructor parameters.
 #>
 
@@ -69,6 +71,7 @@ $ht = @{
     Species = "Domestic cat"
     Type    = "Tabby cat"
 }
+$ht
 $htobj = [pscustomobject]$ht
 $htobj
 
@@ -115,19 +118,21 @@ $obj.OutHashtable()
 # Types #
 #########
 
-$obj | GM # now it is PSCustomObject, duh
+$obj | Get-Member # now it is PSCustomObject, duh
 
 $obj.psobject.TypeNames # this looks familiar
 $obj.psobject.TypeNames.Insert(0, "Kp.CatsAreAwesome")
-$obj | GM
+$obj | Get-Member
 
 function Invoke-CAA {
     param ( 
+        # We only accept parameter of type Kp.CatsAreAwesome
         [PSTypeName('Kp.CatsAreAwesome')]
         [Parameter(ValueFromPipeline)]
         $Cat 
         )
         
+        # If $Cat has been passed, we call method SayHi(), otherwise we just say that cats are awesome (generally)
         if ($PSBoundParameters.ContainsKey('Cat')) {
             "Here's an awesome cat:"
             return $Cat.SayHi()
@@ -162,7 +167,8 @@ $obj2 | Invoke-CAA
 # Specify default output
 Update-TypeData -TypeName kp.CatsAreAwesome -DefaultDisplayPropertySet Name,Type
 $obj # list is now limited to only Name and Type properties
-$obj | fl * #displays all
+$obj2
+$obj | Format-List -Property * #displays all
 
 # Let's see arrays and pscustomobjects working together
 $list = [System.Collections.Generic.List[pscustomobject]]::new()
