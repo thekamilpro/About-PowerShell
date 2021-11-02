@@ -7,8 +7,7 @@
 .PROJECTURI https://github.com/kprocyszyn/About-PowerShell
 .RELEASENOTES 2021 November
 .DESCRIPTION
-Link to the video:
-Documentation:
+Link to the video: https://youtu.be/DAVGyCytsqM
 #>
 
 <#
