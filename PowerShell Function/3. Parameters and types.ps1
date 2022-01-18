@@ -1,5 +1,12 @@
-$Name = Read-Host -Prompt "What's your name?"
-$Age = Read-Host -Prompt "What's your age?"
+# In this case user can either pass parameters, or will be prompted as they are mandatory
+# type is specified, therefore $Age only accepts integers
+param (
+    [Parameter(Mandatory)]
+    [string]$Name,
+
+    [Parameter(Mandatory)]
+    [int]$Age
+)
 
 Write-Host "=================="
 
