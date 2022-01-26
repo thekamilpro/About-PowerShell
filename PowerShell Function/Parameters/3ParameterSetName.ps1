@@ -1,31 +1,45 @@
 function Get-Person {
+    [cmdletbinding(DefaultParameterSetName = "All")]
     param (
         [Parameter(Mandatory, ParameterSetName = "byName")]
-        [string]$Name,
+        [string]$Surname,
 
-        [Parameter(Mandatory = $true, ParameterSetName = "byName")]
-        [int]$Age,
+        [Parameter(ParameterSetName = "byName")]
+        [string]$Firstname,
 
-        [Parameter(ParameterSetName = "byId")]
-        [Guid]$Id
+        [Parameter(Mandatory, ParameterSetName = "byId")]
+        [int]$Id,
+
+        [Parameter(ParameterSetName = "All")]
+        [switch]$All,
+
+        [Parameter()]
+        [switch]$IncludeInactive
     )
 
-    Write-Host "=================="
+    $data = Import-PowerShellDataFile -Path "$PSScriptRoot\data.psd1"
 
-    $email = '{0}@company.com' -f $Name.ToLower()
-
-    Write-Host "Hi $($Name.ToUpper()) $Age"
-
-    If ($PSBoundParameters.ContainsKey('id')) {
-        "Your ID is: $Id"
+    if (!($IncludeInactive.IsPresent)) {
+        $data = $data | Where-Object {$_.Active -eq $true}
     }
 
-    Write-Host "Your email address is: $email"
-
-    if ($Age -gt 17) {
-        Write-Host "You will be able to access any website"
+    if ($PSCmdlet.ParameterSetName -eq "All") {
+        return $data
     }
-    else {
-        Write-Host "We will turn on content blocker approriate to your age"
+
+    if ($PSCmdlet.ParameterSetName -eq "byId") {
+        return $data[$id]
+    }
+
+    if ($PSCmdlet.ParameterSetName -eq "byName") {
+
+        if ($PSBoundParameters.ContainsKey("Firstname")) {
+            return $data.Values | Where-Object { $_.Surname -eq $Surname -and $_.FirstName -eq $Firstname }
+        }
+        else {
+            return $data.Values | Where-Object { $_.Surname -eq $Surname }
+        }
+
+        
     }
 }
