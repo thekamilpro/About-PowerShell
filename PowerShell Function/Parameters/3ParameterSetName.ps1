@@ -17,14 +17,20 @@ function Get-Person {
         [switch]$IncludeInactive
     )
 
+    $items = [System.Collections.Generic.List[pscustomobject]]::new()
     $data = Import-PowerShellDataFile -Path "$PSScriptRoot\data.psd1"
+    $users = $data.users
 
     if (!($IncludeInactive.IsPresent)) {
-        $data = $data | Where-Object {$_.Active -eq $true}
+        $users = $users | Where-Object {$_.Active -eq $true}
+    }
+
+    foreach ($u in $users) {
+        $items.Add([pscustomobject]$u)
     }
 
     if ($PSCmdlet.ParameterSetName -eq "All") {
-        return $data
+        return $items
     }
 
     if ($PSCmdlet.ParameterSetName -eq "byId") {
