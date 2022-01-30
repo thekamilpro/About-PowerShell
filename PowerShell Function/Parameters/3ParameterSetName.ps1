@@ -34,18 +34,16 @@ function Get-Person {
     }
 
     if ($PSCmdlet.ParameterSetName -eq "byId") {
-        return $data[$id]
+        return $items.Where({$_.ID -eq $Id})
     }
 
     if ($PSCmdlet.ParameterSetName -eq "byName") {
 
         if ($PSBoundParameters.ContainsKey("Firstname")) {
-            return $data.Values | Where-Object { $_.Surname -eq $Surname -and $_.FirstName -eq $Firstname }
+            return $items.Where( { $_.Surname -eq $Surname -and $_.FirstName -eq $Firstname })
         }
         else {
-            return $data.Values | Where-Object { $_.Surname -eq $Surname }
+            return $items.Where( { $_.Surname -eq $Surname })
         }
-
-        
     }
 }
