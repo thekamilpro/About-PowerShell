@@ -1,20 +1,26 @@
 function Get-Person {
     [cmdletbinding(DefaultParameterSetName = "All")]
     param (
-        [Parameter(Mandatory, ParameterSetName = "byName")]
+        [Parameter(Mandatory, ParameterSetName = "byName", Position = 1, ValueFromPipeline)]
+        [Alias("SecondName")]
         [string]$Surname,
 
-        [Parameter(ParameterSetName = "byName")]
+        [Parameter(ParameterSetName = "byName", Position = 2)]
+        [ValidateNotNullOrEmpty()]
+        [Alias("GivenName")]
         [string]$Firstname,
 
-        [Parameter(Mandatory, ParameterSetName = "byId")]
+        [Parameter(Mandatory, ParameterSetName = "byId", Position = 1, ValueFromPipeline)]
+        [ValidateRange(1,4)]
         [int]$Id,
 
         [Parameter(ParameterSetName = "All")]
         [switch]$All,
 
-        [Parameter()]
-        [switch]$IncludeInactive
+        [switch]$IncludeInactive,
+
+        [ValidateSet("EU", "US", "NZ")]
+        [string]$Region
     )
 
     $items = [System.Collections.Generic.List[pscustomobject]]::new()
@@ -24,6 +30,10 @@ function Get-Person {
     if (!($IncludeInactive.IsPresent)) {
         $users = $users | Where-Object {$_.Active -eq $true}
     }
+
+    if ($PSBoundParameters.ContainsKey('Region')) {
+        $users = $users | Where-Object {$_.Region -eq $Region}
+    } 
 
     foreach ($u in $users) {
         $items.Add([pscustomobject]$u)
