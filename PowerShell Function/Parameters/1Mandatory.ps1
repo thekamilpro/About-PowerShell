@@ -6,7 +6,7 @@ function Get-Person {
 
         [string]$Firstname,
 
-        #[Parameter(Mandatory)]
+        [Parameter(Mandatory)]
         [int]$Id,
 
         [switch]$All,
@@ -24,6 +24,7 @@ function Get-Person {
         $users = $users | Where-Object {$_.Active -eq $true}
     }
 
+    
     if ($PSBoundParameters.ContainsKey('Region')) {
         $users = $users | Where-Object {$_.Region -eq $Region}
     } 
