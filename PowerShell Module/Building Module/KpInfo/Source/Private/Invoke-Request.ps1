@@ -1,4 +1,5 @@
 function Invoke-Request {
+    [cmdletbinding()]
     param (
         [Parameter(Mandatory, ValueFromPipeline, Position = 1)]
         [uri]$Uri,
@@ -9,7 +10,6 @@ function Invoke-Request {
     $params = @{
         UseBasicParsing = $true
         Uri = $Uri
-        Verbose = $Verbose.IsPresent
     }
 
     $result = Invoke-WebRequest @params

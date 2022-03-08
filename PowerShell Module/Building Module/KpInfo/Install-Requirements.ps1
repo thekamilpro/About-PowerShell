@@ -7,5 +7,4 @@ foreach ($m in $modules) {
         Write-Host "Installing $m"
         Install-Module -Name $m -Force
     }
-
 }
