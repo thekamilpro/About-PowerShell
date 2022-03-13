@@ -9,6 +9,8 @@ In this repository, you can find all code I've been using with "About PowerShell
 
 ## Videos in the series
 
+[Building PowerShell Module - how to organise your source files and build with ease](https://youtu.be/lKO_LPMfV1Y)
+
 [PowerShell Module and Manifest- create and configure your tools](https://youtu.be/xPQq0ui8j78)
 
 [PowerShell Parameter Attributes - validate, group, require params and add pipeline to your function](https://youtu.be/hJIAK3qjlZQ)
