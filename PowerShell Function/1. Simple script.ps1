@@ -1,0 +1,19 @@
+# Sample script which asks user for basic information, then manipulates it and
+# display some information
+
+# There's no way (at least easy) to pass these parameters from prompt, nor validate 
+$Name = Read-Host -Prompt "What's your name?"
+$Age = Read-Host -Prompt "What's your age?"
+
+Write-Host "=================="
+
+$email = '{0}@company.com' -f $Name.ToLower()
+
+Write-Host "Hi $($Name.ToUpper())"
+Write-Host "your email address is: $email"
+
+if ($Age -gt 17) {
+    Write-Host "You will be able to access any website"
+} else {
+    Write-Host "We will turn on content blocker approriate to your age"
+}
