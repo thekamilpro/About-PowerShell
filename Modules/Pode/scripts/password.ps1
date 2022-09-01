@@ -88,3 +88,23 @@ function Get-RandomPassword
     }
     return $password
 }
+
+function Submit-Password
+{
+    param ([string]$text)
+    
+    $url = "https://pwpush.com/p.json"
+    $body = @{
+        password = @{
+            "payload" = $text
+            "expire_after_days" = "2"
+            "expire_after_views" = "10"
+            "note" = ""
+            "retrieval_step" = "true"
+            "deletable_by_viewer" = "false"
+        }
+    } | ConvertTo-Json
+
+    $response = Invoke-RestMethod -Method Post -Uri $url -Body $body -ContentType "application/json"
+    return "https://pwpush.com/p/$($response.url_token)" 
+}
