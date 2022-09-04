@@ -2,10 +2,9 @@ Import-Module -Name Pode, Pode.Web
 Import-Module -Name "$PSScriptRoot\scripts\password.ps1" -Force
 
 Start-PodeServer {
-    Add-PodeEndpoint -Address localhost -Port 8080 -Protocol Http
+    Add-PodeEndpoint -Address 0.0.0.0 -Port 8080 -Protocol Http
 
     New-PodeLoggingMethod -Terminal | Enable-PodeErrorLogging -Levels @("Error", "Warning")
-    New-PodeLoggingMethod -Terminal | Enable-PodeRequestLogging
 
     Use-PodeWebTemplates -Title 'Passwords webapp' -Theme Dark
 
@@ -18,12 +17,10 @@ Start-PodeServer {
 
     Set-PodeWebNavDefault -Items $navPode, $navDiv, $navPodeWeb, $navDiv, $navYT, $navDiv, $navGH, $navDiv, $navPwpush
 
-
-    Add-PodeWebPage -Name 'Generate Password' -NoTitle -ScriptBlock {
+    Add-PodeWebPage -Name 'Password Management' -NoTitle -ScriptBlock {
         New-PodeWebContainer -Content @(
-            New-PodeWebForm -Name 'generatepassword' -SubmitText "Generate" -ShowReset -ScriptBlock {
+            New-PodeWebForm -Name 'passwordform' -SubmitText "Generate Password" -ShowReset -ResetText "Reset form" -ScriptBlock {
                 
-                #$WebEvent.Data | Out-Default
                 if (!$WebEvent.Data.Options)
                 {
                     Show-PodeWebToast -Message "You must select at least one option" -Title "Error"
@@ -31,27 +28,23 @@ Start-PodeServer {
                 else
                 {
                     $np = New-Password -Data $WebEvent.Data
-                    Update-PodeWebTextbox -Value $np -Name "Password"
-
-                    if ($WebEvent.Data.Push -eq $true)
-                    {
-                        $link = Submit-Password -text $np
-                        Update-PodeWebTextbox -Value $link -Name "Password link"
-                    }
-                    else
-                    {
-                        Update-PodeWebTextbox -Value "" -Name "Password link"
-                    }
+                    Update-PodeWebTextbox -Value $np -Name "secret"
                 }
-                
             } -Content @(
                 New-PodeWebRange -Name 'Length' -Min 12 -Max 100 -ShowValue -Value 30
-                New-PodeWebCheckbox -Name 'Options' -Options @("uper", "lower", "numeric", "special") -DisplayOptions @("A-Z", "a-z", "0-9", "@#^&$")
-                New-PodeWebCheckbox -Name "Push" -AsSwitch
-                New-PodeWebTextbox -Name "Password"
+                New-PodeWebCheckbox -Name 'Options' -Options @("upper", "lower", "numeric", "special") -DisplayOptions @("A-Z", "a-z", "0-9", "@#^&$")
+                New-PodeWebTextbox -Name "secret" -DisplayName "Password"
                 New-PodeWebTextbox -Name "Password link" -ReadOnly
+                New-PodeWebButton -Name "Push password" -CssStyle @{"margin-bottom" = "0rem"} -ScriptBlock {
+                    if ( [string]::IsNullOrEmpty($WebEvent.Data.secret))
+                    {
+                        Show-PodeWebToast -Message "Password field cannot be empty" -Title "Error" -Icon "alert-circle"
+                        return
+                    }       
+                    $link = Submit-Password -text $WebEvent.Data.secret
+                    Update-PodeWebTextbox -Value $link -Name "Password link"
+                }
             )
         )
     }
-
 }
