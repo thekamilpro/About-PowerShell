@@ -2,7 +2,7 @@ Import-Module -Name Pode, Pode.Web
 Import-Module -Name "$PSScriptRoot\scripts\password.ps1" -Force
 
 Start-PodeServer {
-    Add-PodeEndpoint -Address 0.0.0.0 -Port 8080 -Protocol Http
+    Add-PodeEndpoint -Address 0.0.0.0 -Port 8080 -Protocol Http -Force
 
     New-PodeLoggingMethod -Terminal | Enable-PodeErrorLogging -Levels @("Error", "Warning")
 
@@ -19,18 +19,7 @@ Start-PodeServer {
 
     Add-PodeWebPage -Name 'Password Management' -NoTitle -ScriptBlock {
         New-PodeWebContainer -Content @(
-            New-PodeWebForm -Name 'passwordform' -SubmitText "Generate Password" -ShowReset -ResetText "Reset form" -ScriptBlock {
-                
-                if (!$WebEvent.Data.Options)
-                {
-                    Show-PodeWebToast -Message "You must select at least one option" -Title "Error"
-                }
-                else
-                {
-                    $np = New-Password -Data $WebEvent.Data
-                    Update-PodeWebTextbox -Value $np -Name "secret"
-                }
-            } -Content @(
+            New-PodeWebForm -Name 'passwordform' -SubmitText "Generate Password" -ShowReset -ResetText "Reset form" -Content @(
                 New-PodeWebRange -Name 'Length' -Min 12 -Max 100 -ShowValue -Value 30
                 New-PodeWebCheckbox -Name 'Options' -Options @("upper", "lower", "numeric", "special") -DisplayOptions @("A-Z", "a-z", "0-9", "@#^&$")
                 New-PodeWebTextbox -Name "secret" -DisplayName "Password"
@@ -44,7 +33,18 @@ Start-PodeServer {
                     $link = Submit-Password -text $WebEvent.Data.secret
                     Update-PodeWebTextbox -Value $link -Name "Password link"
                 }
-            )
+            ) -ScriptBlock {
+                
+                if (!$WebEvent.Data.Options)
+                {
+                    Show-PodeWebToast -Message "You must select at least one option" -Title "Error"
+                }
+                else
+                {
+                    $np = New-Password -Data $WebEvent.Data
+                    Update-PodeWebTextbox -Value $np -Name "secret"
+                }
+            }
         )
     }
 }
