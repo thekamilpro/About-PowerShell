@@ -9,6 +9,9 @@ In this repository, you can find all code I've been using with "About PowerShell
 
 ## Videos in the series
 
+[Developing a Web Application with PowerShell - Pode, the PowerFul Module
+](https://youtu.be/N-yjDGzEYak)
+
 [Building PowerShell module on Azure DevOps pipeline - step by step guide](https://youtu.be/RZzmdF1iI7E)
 
 [Building PowerShell Module - how to organise your source files and build with ease](https://youtu.be/lKO_LPMfV1Y)
