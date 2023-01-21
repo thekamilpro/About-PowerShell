@@ -29,6 +29,9 @@ catch
 {
     Write-Host "Well that doesn't look good..."
     Write-Host $_
-    Throw
+    
+    #Providing Throw without any comment rethrows the error
+    #Throw
 }
 
+Write-Host "This is the end"

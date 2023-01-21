@@ -20,7 +20,7 @@ function Start-Work
 #Try/Catch
 try
 {
-    Start-Work #-Die
+    Start-Work -Die
 }
 catch
 {
